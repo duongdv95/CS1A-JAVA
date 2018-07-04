@@ -5,7 +5,11 @@ import javax.swing.JOptionPane;
 
 public class LabVariables {
     public static void main(String[] args) {
-
+        username newuser = new username();
+        newuser.getName();
+        newuser.display_usernames();
+        newuser.GUIgetname();
+        newuser.GUIdisplay_usernames();
     }
 }
 
