@@ -1,5 +1,7 @@
 package com.danielduong;
-
+/*
+Author: Daniel Duong
+ */
 public class ShapeShifter {
     public static void main(String[] args) {
         Drawer shape = new Drawer();
