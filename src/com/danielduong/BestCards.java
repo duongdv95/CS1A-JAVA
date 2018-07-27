@@ -19,6 +19,7 @@ public class BestCards {
         // Static Method (works using either class or instance)
         System.out.println("=========STATIC METHOD=========");
         System.out.println("Total Number of Greetings: " + Greeting.getNumberOfGreetings());
+//        System.out.println("Total Number of Greetings: " + valentines.getNumberOfGreetings());
     }
 }
 
@@ -53,6 +54,7 @@ class Greeting {
         greetingCardNumber = ++numberOfGreetings;
     }
 
+    // Static Method
     public static int getNumberOfGreetings() {
         return numberOfGreetings;
     }
