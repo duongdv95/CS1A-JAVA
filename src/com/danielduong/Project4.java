@@ -1,62 +1,73 @@
 package com.danielduong;
 
-import jdk.nashorn.internal.scripts.JO;
-
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.*;
+import java.util.Arrays;
 
 public class Project4 {
+    // Create main method that creates weblogger instance and calls all methods (4pts)
     public static void main(String[] args) throws Exception {
-        webblogger program = new webblogger();
+        weblogger program = new weblogger();
         try {
-            program.chooseFile();
-        } catch (Exception ex) {
-            System.out.println("No File Selected");
+            program.chooseFileAndStoreData();
+            program.sortArrayAndOutputFile();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }
 
-class webblogger {
+// Create a separate class called weblogger (4pts)
+class weblogger {
     private String [] webLogArray = new String[2990];
 
-    public void chooseFile() throws Exception
-    {
+    // Create a method to read each line of the web log file. (4pts)
+    public void chooseFileAndStoreData() throws FileNotFoundException {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
         int i = 0;
         if( result == JFileChooser.APPROVE_OPTION) {
-            java.io.File file = fileChooser.getSelectedFile();
-            String filename = fileChooser.getSelectedFile().getPath();
-            JOptionPane.showMessageDialog(null, "You selected " + filename);
+            File selection = fileChooser.getSelectedFile();
+            if(selection.exists()) {
+                java.io.File file = fileChooser.getSelectedFile();
+                String filename = fileChooser.getSelectedFile().getPath();
+                JOptionPane.showMessageDialog(null, "You selected " + filename);
 
-            Scanner input = new Scanner(file);
-            while(input.hasNext()) {
-                String currentLine = input.nextLine();
-                webLogArray[i] = currentLine;
-                i++;
+                Scanner input = new Scanner(file);
+                // Each line should be stored in a private array (4pts)
+                while(input.hasNext()) {
+                    String currentLine = input.nextLine();
+                    webLogArray[i] = currentLine;
+                    i++;
+                }
+                input.close();
+            } else {
+                throw new FileNotFoundException();
             }
-            for(int j = 0; j<webLogArray.length; j++) {
-                System.out.println(webLogArray[j]);
-            }
-            input.close();
         } else if (result == JFileChooser.CANCEL_OPTION) {
             JOptionPane.showMessageDialog(null, "You did not select anything!");
+            System.exit(0);
         }
-    }
-
-    public void storeToArray() {
 
     }
-    public void openFile(String source, String target, String oldStr, String newStr) throws Exception
-    {
-//        File sourceFile = new File(source);
-    }
 
-    public void writeOutputFile(){
-//        PrintWriter output = new PrintWriter(file);
-//        output.println(record);
-//        output.close();
+    // Create one more method that uses Arrays class sort and write content to a file (4pts)
+    public void sortArrayAndOutputFile() throws FileNotFoundException {
+        Arrays.sort(webLogArray);
+        File targetFile = new File("weblog2.txt") ;
+        if(targetFile.exists()) {
+            String a = targetFile.getAbsolutePath();
+            System.out.println(a);
+            PrintWriter output = new PrintWriter(targetFile);
+            for(String str: webLogArray) {
+                output.println(str);
+            }
+            output.close();
+        } else {
+            throw new FileNotFoundException();
+        }
     }
 }
