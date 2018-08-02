@@ -26,10 +26,11 @@ class weblogger {
 
     // Create a method to read each line of the web log file. (4pts)
     public void chooseFileAndStoreData() throws FileNotFoundException {
-        JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser;
+        fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
         int i = 0;
-        if( result == JFileChooser.APPROVE_OPTION) {
+        if(result == JFileChooser.APPROVE_OPTION) {
             File selection = fileChooser.getSelectedFile();
             if(selection.exists()) {
                 java.io.File file = fileChooser.getSelectedFile();
@@ -44,7 +45,8 @@ class weblogger {
                     i++;
                 }
                 input.close();
-            } else {
+            }
+            else {
                 throw new FileNotFoundException();
             }
         } else if (result == JFileChooser.CANCEL_OPTION) {
@@ -55,19 +57,17 @@ class weblogger {
     }
 
     // Create one more method that uses Arrays class sort and write content to a file (4pts)
-    public void sortArrayAndOutputFile() throws FileNotFoundException {
+    public void sortArrayAndOutputFile() {
         Arrays.sort(webLogArray);
-        File targetFile = new File("weblog2.txt") ;
-        if(targetFile.exists()) {
-            String a = targetFile.getAbsolutePath();
-            System.out.println(a);
+        File targetFile = new File("weblog2.txt");
+        try {
             PrintWriter output = new PrintWriter(targetFile);
             for(String str: webLogArray) {
                 output.println(str);
             }
             output.close();
-        } else {
-            throw new FileNotFoundException();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }
