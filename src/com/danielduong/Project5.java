@@ -5,6 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Project5 {
+    // main method (5 pts)
     public static void main(String[] args) {
         seating chart = new seating();
         chart.askUser();
@@ -12,23 +13,35 @@ public class Project5 {
 }
 
 class seating {
+    // instance field (5 pts)
     private String [] seatingAssignment = new String[20];
-    int endProgram;
+    private int endProgram;
 
     public void askUser() {
-        int n;
+        int n = 1;
         int seatNumber = 0;
-        String studentName = null;
-
+        String studentName;
         Scanner scanner = new Scanner( System.in );
 
         do {
             endProgram = 0;
-            System.out.println("Enter 1 to add student, 2 to move/swap student, or 3 to check available seats: ");
-            n = scanner.nextInt();
+            Boolean validOption = false;
+            do {
+                try {
+                    System.out.println("Enter 1 to add student, 2 to move/swap student, or 3 to check available seats: ");
+                    n = scanner.nextInt();
+                    validOption = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input!");
+                    scanner.nextLine();
+                }
+            } while (!validOption);
+
             if(n == 1) {
                 System.out.println("Enter a student's name: ");
-                studentName = scanner.next();
+                scanner.nextLine();
+                studentName = scanner.nextLine();
+
                 System.out.println("Assign a seat: ");
                 seatNumber = scanner.nextInt();
                 addStudent(studentName, seatNumber);
@@ -37,15 +50,14 @@ class seating {
                 Boolean studentExists = false;
 
                 System.out.println("Enter a student's name: ");
-                studentName = scanner.next();
+                scanner.nextLine();
+                studentName = scanner.nextLine();
 
                 for(String student : seatingAssignment) {
-                    if(student != null) {
-                        if(student.toLowerCase().equals(studentName.toLowerCase())) {
-                            studentName = student;
-                            studentExists = true;
-                            break;
-                        }
+                    if(student != null && student.toLowerCase().equals(studentName.toLowerCase())) {
+                        studentName = student;
+                        studentExists = true;
+                        break;
                     }
                 }
 
@@ -81,6 +93,7 @@ class seating {
         while (endProgram != 0);
     }
 
+    // Mutator methods (3 pts)
     public void addStudent(String name, int seatPosition) {
         if(seatingAssignment[seatPosition] == null) {
             seatingAssignment[seatPosition] = name;
@@ -102,6 +115,7 @@ class seating {
         }
     }
 
+    // Instance method (5 pts) And Accessor method (2 pts)
     public void checkAvailableSeats() {
         int column = 0;
         String availableSeats = "";
