@@ -15,7 +15,7 @@ public class Project5 {
 class seating {
     // instance field (5 pts)
     private String [] seatingAssignment = new String[20];
-    private int endProgram;
+    private boolean endProgram;
 
     public void askUser() {
         int n = 1;
@@ -24,11 +24,11 @@ class seating {
         Scanner scanner = new Scanner( System.in );
 
         do {
-            endProgram = 0;
+            endProgram = false;
             Boolean validOption = false;
             do {
                 try {
-                    System.out.println("Enter 1 to add student, 2 to move/swap student, or 3 to check available seats: ");
+                    System.out.println("Enter 1 to add student, 2 to move/swap student, 3 to check available seats, or 4 to end program: ");
                     n = scanner.nextInt();
                     validOption = true;
                 } catch (InputMismatchException e) {
@@ -38,13 +38,17 @@ class seating {
             } while (!validOption);
 
             if(n == 1) {
-                System.out.println("Enter a student's name: ");
-                scanner.nextLine();
-                studentName = scanner.nextLine();
-
-                System.out.println("Assign a seat: ");
-                seatNumber = scanner.nextInt();
-                addStudent(studentName, seatNumber);
+                try {
+                    System.out.println("Enter a student's name: ");
+                    scanner.nextLine();
+                    studentName = scanner.nextLine();
+                    System.out.println("Assign a seat: ");
+                    seatNumber = scanner.nextInt();
+                    addStudent(studentName, seatNumber);
+                }  catch (InputMismatchException e) {
+                    System.out.println("Error! Please enter numeric seat numbers.");
+                    scanner.nextLine();
+                }
             } else if (n == 2) {
                 Boolean isNumeric = false;
                 Boolean studentExists = false;
@@ -81,21 +85,18 @@ class seating {
                 }
             } else if (n == 3) {
                 checkAvailableSeats();
+            } else if (n == 4) {
+                endProgram = true;
             } else {
                 System.out.println("Invalid option, try again.");
             }
-            for(String element : seatingAssignment) {
-                if(element == null) {
-                    endProgram ++;
-                }
-            }
         }
-        while (endProgram != 0);
+        while (!endProgram);
     }
 
     // Mutator methods (3 pts)
     public void addStudent(String name, int seatPosition) {
-        if(seatingAssignment[seatPosition] == null) {
+        if((seatPosition < 20) && (seatingAssignment[seatPosition] == null)) {
             seatingAssignment[seatPosition] = name;
         } else {
             System.out.println("Seat occupied, please pick from these available seats");
@@ -134,5 +135,4 @@ class seating {
         }
         System.out.println(availableSeats);
     }
-
 }
